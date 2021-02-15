@@ -1,25 +1,340 @@
-*
-{
-	font-family: 'Lato', sans-serif;
+@font-face {
+    font-family: 'benderregular';
+    src: url('../rs/font/Bender/bender-webfont.woff2') format('woff2'),
+         url('../rs/font/Bender/bender-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'benderbold';
+    src: url('../rs/font/Bender/bender-bold-webfont.woff2') format('woff2'),
+         url('../rs/font/Bender/bender-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'benderlight';
+    src: url('../rs/font/Bender/bender-light-webfont.woff2') format('woff2'),
+         url('../rs/font/Bender/bender-light-webfont.woff') format('woff');
+    font-weight: lighter;
+    font-style: normal;
+
 }
 
+* {
+    font-family: 'benderbold';
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 
-.wrapper {
-    height: 800px;
+:root {
+    --speed: 1;
+    --delay: 0.5;
+    --font-size: 60;
+  }
+  body {
+    background: #111;
+    min-height: 100vh;
+    overflow-x: hidden;
+    --font-size: 100;
+    /* add perspective for the rotation of the article, added through the script */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .page {
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: center;
+    
+    font-size: calc(var(--font-size) * 1px);
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #000000; 
-}
+    font-variant: small-caps;
+    position: relative;
+  }
 
-.txt {
-    color: #ffffff;
-    background:#000000;
-    font-size:200px;
-    font-weight: bold;
-    font-family: Arial;
+  .grid-container {
+    display: grid;
+    grid-template: 100vh / 33% 67%;
+  }
+
+  .text {
+    --clip: 0;
+    position: relative;
+    grid-column: 1 / 2;
+    grid-row: 1/1;
+    justify-self: center;
+    padding: 50px;
+  }
+  .test {
+    grid-column: 2 / 3;
+    grid-row: 1/1;
+  }
+
+  .text--north {
+    --origin: 50% 0;
+  }
+  .text--north-east {
+    --origin: 100% 0;
+  }
+  .text--east {
+    --origin: 100% 50%;
+  }
+  .text--south-east {
+    --origin: 100% 100%;
+  }
+  .text--south {
+    --origin: 50% 100%;
+  }
+  .text--south-west {
+    --origin: 0% 100%;
+  }
+  .text--west {
+    --origin: 0% 50%;
+  }
+  .text--north-west {
+    --origin: 0% 0%;
+  }
+  .text span {
+    transition: -webkit-clip-path calc(var(--speed) * 1s) calc(var(--delay) * 1s) ease, clip-path calc(var(--speed) * 1s) calc(var(--delay) * 1s) ease;
+    -webkit-clip-path: circle(calc(var(--clip) * 1%) at var(--origin));
+    clip-path: circle(calc(var(--clip) * 1%) at var(--origin));
+  }
+  .text[data-scroll="in"] > span {
+    --clip: 150;
+  }
+  .text:before {
+    content: attr(data-word);
+    position: absolute;
+    color: rgba(255,255,255,0.15);
+    top: 0;
+    left: 0;
+    font-size: calc(var(--font-size) * 1px);
+    z-index: -1;
+    padding: 50px;
+  }
+  /**
+    * Themeing
+  */
+  .container {
+    height: 100vh;
+    overflow: auto;
+    overflow-x: hidden;
+    -ms-scroll-snap-type: y mandatory;
+        scroll-snap-type: y mandatory;
+  }
+  .char {
+    color: #fff;
+  }
+  .text--north .char:nth-of-type(1) {
+    color: #e6261f;
+  }
+  .text--north-east .char:nth-of-type(1) {
+    color: #eb7532;
+  }
+  .text--east .char:nth-of-type(1) {
+    color: #f7d038;
+  }
+  .text--south-east .char:nth-of-type(1) {
+    color: #a3e048;
+  }
+  .text--south .char:nth-of-type(1) {
+    color: #49da9a;
+  }
+  .text--south-west .char:nth-of-type(1) {
+    color: #34bbe6;
+  }
+  .text--west .char:nth-of-type(1) {
+    color: #4355db;
+  }
+  .text--north-west .char:nth-of-type(1) {
+    color: #e6261f;
+  }
+  .text--north-west .char:nth-of-type(2) {
+    color: #f7d038;
+  }
+  .text--north-west .char:nth-of-type(3) {
+    color: #49da9a;
+  }
+  .text--north-west .char:nth-of-type(4) {
+    color: #4355db;
+  }
+  .text--north-west .char:nth-of-type(5) {
+    color: #d23be7;
+  }
+  
+
+
+
+
+  /* Ab hier kommt die Card */
+  article {
+    /* limit the width of the article container */
+    width: 80%;
+
+    justify-self: center;
+    /* display the contents in a column */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(60, 60, 60);
+    /*background: hsl(0, 0%, 100%);*/
+    line-height: 2;
+    border-radius: 10px;
+    margin: 0.5rem;
+    margin-bottom: 50px;
+    margin-top: 18%;
+    /* transition for the transform property, updated in the script */
+    transition: transform 0.2s ease-out;
+    box-shadow: 0 0 5px -2px hsla(0, 98%, 50%, 0.1);
+  }
+  article figure {
+    /* limit the width and height of the figure to show the image in a circle */
+    width: 240px;
+    height: 240px;
+    border-radius: 20%;
+    /* specify negative margin matching half the height of the element */
+    margin-top: -120px;
+    /* position relative for the pseudo element */
+    position: relative;
+    
+  }
+  article figure:before {
+    /* add a border around the figure matching the color of the background, faking the clip */
+    content: "";
+    border-radius: inherit;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    border: 1rem solid #e6261f;
+    box-shadow: 0 1px hsla(0, 0%, 0%, 0.1);
+  }
+  article figure img {
+    /* stretch the image to cover the size of the wrapping container */
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    /* object fit to maintain the aspect ratio and fit the width/height */
+    object-fit: cover;
+  }
+  
+  article div {
+    /* center the text in the div container */
+    text-align: center;
+    margin: 2rem;
+  }
+  article div p {
+    color: hsl(0, 0%, 78%);
+    font-family: 'benderlight';
+    --font-size: 60;
+    /*font-size: calc(var(--font-size) * 0.7px);*/
+    font-size: 2rem;
+    margin: 1rem 0 3rem;
+    /* position relative for the pseudo element */
+    position: relative;
+    z-index: 5;
+  }
+
+  article div p:before {
+    /* with SVG elements include two icons for the quote */
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    z-index: -5;
+    opacity: 0.05;
+    /* position the icons at either end of the paragraph, rotate the second to have a mirrorer image */
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="70" height="70"><rect x="0" y="40" width="30" height="30"></rect><path d="M 0 40 q 0 -40 30 -40 v 15 q -15 0 -15 25"></path><rect x="40" y="40" width="30" height="30"></rect><path d="M 40 40 q 0 -40 30 -40 v 15 q -15 0 -15 25"></path></svg>'),
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="70" height="70" transform="rotate(180)"><rect x="0" y="40" width="30" height="30"></rect><path d="M 0 40 q 0 -40 30 -40 v 15 q -15 0 -15 25"></path><rect x="40" y="40" width="30" height="30"></rect><path d="M 40 40 q 0 -40 30 -40 v 15 q -15 0 -15 25"></path></svg>');
+    background-position: 20% 20%, 80% 80%;
+    background-repeat: no-repeat;
+  }
+  article div h1 {
+    /* considerably reduce the size of the heading */
+    color: hsl(260, 5%, 55%);
+    /*font-family: "Lato", sans-serif;*/
+    /*font-size: 0.75rem;*/
+    font-family: "benderlight", sans-serif;
+    font-size: 1rem;
     text-transform: uppercase;
-}
-.neon wrapper {
-    display: inline-flex;
+    letter-spacing: 0.05rem;
+  }
+
+
+
+
+  /* FONT SNIPPET PKE 
+  font-family: 'benderlight';
+  --font-size: 60;
+  font-size: calc(var(--font-size) * 1px);
+
+  */
+
+
+@media only screen and (max-width: 1200px) {
+  .grid-container {
+      display: grid;
+      grid-template: 20vh 80vh / 100%;
+  }
+  .text {
+      --clip: 0;
+      position: relative;
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      justify-self: center;
+      font-size: calc(var(--font-size) * 0.6px);
+  }
+  .text:before {
+    font-size: calc(var(--font-size) * 0.6px);
+
+  }
+  .test {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      padding: 0.5em;
+      font-size: calc(var(--font-size) * 0.5px);
+  }
+
+  article figure {
+    /* limit the width and height of the figure to show the image in a circle */
+    width: 120px;
+    height: 120px;
+    border-radius: 20%;
+    /* specify negative margin matching half the height of the element */
+    margin-top: -60px;
+    /* position relative for the pseudo element */
+    position: relative;
+    
+  }
+  article figure:before {
+    /* add a border around the figure matching the color of the background, faking the clip */
+    content: "";
+    border-radius: inherit;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    border: 0.5rem solid #e6261f;
+    box-shadow: 0 1px hsla(0, 0%, 0%, 0.1);
+  }
+  article figure img{
+    margin-bottom: 80%;
+
+  }
 }
